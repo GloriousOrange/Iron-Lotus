@@ -20,17 +20,17 @@ Demonic Scourge — demons are spreading across the world, and the House is
 one of the forces standing against them. (Likely the game's actual title.)
 Members join it by very different paths:
 
-- The **Ninja** and the **Kimono Girl** are a couple — professional
-  thieves. Her elemental magic comes from a set of enchanted items the
-  pair stole during a job. They were eventually captured by the
+- The **Ninja (Kageharu)** and the **Kimono Girl (Yukiko)** are a couple —
+  professional thieves. Her elemental magic comes from a set of enchanted
+  items the pair stole during a job. They were eventually captured by the
   authorities and given a choice: execution, or serve the Iron Lotus until
   death. They're conscripts, not volunteers.
-- The **Knight** and the **Priest** come from a far-away land. They
-  traveled East seeking the source of the Demonic Corruption and joined
-  the House of the Iron Lotus voluntarily, out of purpose rather than
-  punishment.
-- The **Viking** and the **Seidr Witch** were warriors from the far
-  northern mountains. Like the Knight and Priest, they came looking for
+- **Sir Garrick Voss (Knight)** and **Father Malachi (Priest)** come from a
+  far-away land. They traveled East seeking the source of the Demonic
+  Corruption and joined the House of the Iron Lotus voluntarily, out of
+  purpose rather than punishment.
+- **Trygger (Viking)** and **Astrid (Seidr Witch)** were warriors from the
+  far northern mountains. Like Voss and Malachi, they came looking for
   the source of the Demonic uprising and joined the House of the Iron
   Lotus voluntarily.
 
@@ -47,13 +47,14 @@ the latter, from two different distant lands), all under the same banner.
 - Hard but fair — Souls-adjacent difficulty via enemy patterns and precise
   play, not stat-checks.
 - Local couch co-op, multiple very differently-controlled characters,
-  organized as three pairs (skill fighter + spellcaster): Ninja/Kimono
-  Girl, Knight/Priest, Viking/Seidr Witch.
+  organized as three pairs (skill fighter + spellcaster): Ninja
+  (Kageharu)/Kimono Girl (Yukiko), Knight (Sir Garrick Voss)/Priest
+  (Father Malachi), Viking (Trygger)/Seidr Witch (Astrid).
 - Godot 4, PC-only for the initial build (no online netcode, no mobile).
 
 ## Characters
 
-### Ninja
+### Ninja — Kageharu
 - Backstory: professional thief, partner of the Kimono Girl (see Lore
   above).
 - Agile: wall-climb, slide, wall-jump, dodge-roll.
@@ -66,7 +67,7 @@ the latter, from two different distant lands), all under the same banner.
   instead.
 - Ranged use: stuns for ~1s, or kills light enemies outright.
 
-### Viking
+### Viking — Trygger
 - Backstory: warrior from the far northern mountains, partner of the Seidr
   Witch; came seeking the source of the Demonic uprising and joined the
   House of the Iron Lotus voluntarily (see Lore above).
@@ -78,7 +79,7 @@ the latter, from two different distant lands), all under the same banner.
   sword+shield offers a block like the Knight's, with dodge-roll as the
   universal fallback for the other loadouts.
 
-### Knight
+### Knight — Sir Garrick Voss
 - Backstory: traveled from a far-away land with the Priest, seeking the
   source of the Demonic Corruption; joined the House of the Iron Lotus
   voluntarily (see Lore above).
@@ -93,7 +94,7 @@ the latter, from two different distant lands), all under the same banner.
   forward (standard block), raised overhead (anti-aerial-attack block), or
   angled diagonally. Only available on one-handed+shield loadouts.
 
-### Kimono Girl (elemental spellcaster)
+### Kimono Girl — Yukiko (elemental spellcaster)
 - Backstory: professional thief, partner of the Ninja (see Lore above). Her
   magic comes from enchanted items stolen during a heist — possibly the
   fans themselves.
@@ -149,7 +150,7 @@ choices: melee spell, fan 1 spell, fan 2 spell). Melee is cooldown-based
 - Whether chopsticks vs. hairpin is a real choice (two distinct melee
   weapons) or just a cosmetic/flavor decision for one weapon.
 
-### Priest (Aspect-based spellcaster)
+### Priest — Father Malachi (Aspect-based spellcaster)
 - Backstory: traveled from a far-away land with the Knight, seeking the
   source of the Demonic Corruption; joined the House of the Iron Lotus
   voluntarily (see Lore above).
@@ -212,7 +213,7 @@ either way per spell, or have its own visual treatment.)
   health-pool mechanics for Contagious Suffering, etc.) — concept/effect
   level only for now.
 
-### Seidr Witch (Norse spellcaster)
+### Seidr Witch — Astrid (Norse spellcaster)
 - Backstory: warrior from the far northern mountains, partner of the
   Viking; came seeking the source of the Demonic uprising and joined the
   House of the Iron Lotus voluntarily (see Lore above).
