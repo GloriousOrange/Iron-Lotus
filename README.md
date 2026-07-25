@@ -9,9 +9,12 @@ for implementation.
 
 ## Status
 
-**Concept/design phase.** No game code yet — this is the design reference
-the team (4 friends + the project owner, all collaborating via Claude)
-will build from once the concept is fleshed out.
+**Early implementation.** This README is still the living design
+reference (4 friends + the project owner, all collaborating via Claude),
+but a first-pass Godot 4 project now exists: Kageharu (Ninja) is playable
+with a placeholder moveset and a test Level 1 scene (parallax background,
+a couple of humanoid/flying placeholder enemies). Everything else in this
+doc is still design-only until it gets built the same way.
 
 ## Lore
 
@@ -279,12 +282,45 @@ Aspect order never matters (Storm+Poison == Poison+Storm).
   unlimited; difficulty comes from enemy patterns, hitboxes, and timing —
   not a resource meter.
 - **Loadout selection**: at the start of each level, pick **two** primary
-  (melee) options and **one** secondary (ranged) option. The two melee
-  options can be swapped mid-level via a button press; the ranged
-  secondary is locked in for the whole level.
+  (melee) options and **one** secondary (ranged) option. Both melee
+  options are simultaneously available in-level via two separate attack
+  buttons (see Controls below) — no swap button/animation needed. The
+  ranged secondary is locked in for the whole level.
+- **Blocking gate**: a character can block if *either* of their two
+  equipped melee options supports blocking (e.g. loading in a katana AND
+  nun-chucks still lets the Ninja block, even mid-swing with the
+  nun-chucks) — blocking isn't tied to "whichever weapon you swung last."
 - **Ranged ammo**: limited, regenerates slowly over time (passive trickle).
   Pickups as a faster top-up are optional/TBD, not required for the
   system to work.
+
+### Controls (generic gamepad)
+
+One control scheme across all six characters, so switching characters in
+co-op doesn't mean relearning buttons:
+
+| Button | Action |
+|---|---|
+| A (bottom face) | Jump |
+| X (left face) | Attack 1 |
+| Y (top face) | Attack 2 |
+| B (right face) | Attack 3 |
+| Left shoulder | Block (only does anything if the loadout allows it) |
+| Right shoulder | Dodge-roll |
+| Start | Pause |
+
+Attack 1/2/3 map differently by character archetype, but always cover "the
+two equipped melee options + the ranged/secondary":
+- **Skill fighters** (Ninja, Knight, Viking): Attack 1/2 = the two equipped
+  melee weapons, Attack 3 = the ranged throw.
+- **Casters** (Kimono Girl, Priest, Seidr Witch): Attack 1 = the melee
+  weapon/relic, Attack 2/3 = the two configured secondary items (fans/
+  books). The Seidr Witch currently has only one cast slot (see her open
+  items), so her Attack 3 mapping is still open.
+
+Keyboard equivalents exist for testing (WASD/arrows move, Space jump,
+J/K/L = Attack 1/2/3, Shift block, Ctrl dodge, Esc pause) but the gamepad
+scheme above is the primary target.
 
 ## Health / Lives / Checkpoints
 

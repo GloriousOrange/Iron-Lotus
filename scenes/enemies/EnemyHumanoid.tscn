@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/EnemyHumanoid.gd" id="1_enemy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_enemy"]
+radius = 12.0
+height = 40.0
+
+[node name="EnemyHumanoid" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_enemy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_enemy")
+
+[node name="Visual" type="Polygon2D" parent="."]
+color = Color(0.55, 0.1, 0.1, 1)
+polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
+
+[node name="LedgeCheck" type="RayCast2D" parent="."]
+position = Vector2(14, 16)
+target_position = Vector2(0, 20)
+enabled = true
+
+[node name="WallCheck" type="RayCast2D" parent="."]
+target_position = Vector2(16, 0)
+enabled = true

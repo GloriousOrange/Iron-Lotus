@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Ninja.tscn" id="1_ninja"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/EnemyHumanoid.tscn" id="2_humanoid"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/EnemyFlying.tscn" id="3_flying"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(2000, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(24, 140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(200, 24)
+
+[node name="Level1" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="FarLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.2)
+
+[node name="TempleSilhouette" type="Polygon2D" parent="ParallaxBackground/FarLayer"]
+color = Color(0.35, 0.28, 0.15, 1)
+polygon = PackedVector2Array(300, 500, 340, 380, 380, 500, 420, 340, 460, 500, 500, 420, 540, 500)
+
+[node name="NearLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.6, 0.6)
+
+[node name="HillSilhouette" type="Polygon2D" parent="ParallaxBackground/NearLayer"]
+color = Color(0.25, 0.2, 0.1, 1)
+polygon = PackedVector2Array(0, 620, 200, 560, 500, 600, 800, 540, 1100, 610, 1400, 580, 1600, 620)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(1000, 700)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="Polygon2D" parent="Ground"]
+color = Color(0.2, 0.18, 0.12, 1)
+polygon = PackedVector2Array(-1000, -20, 1000, -20, 1000, 20, -1000, 20)
+
+[node name="Wall" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(420, 610)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="Wall"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-12, -70, 12, -70, 12, 70, -12, 70)
+
+[node name="Platform" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(750, 540)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Visual" type="Polygon2D" parent="Platform"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
+
+[node name="Ninja" parent="." instance=ExtResource("1_ninja")]
+position = Vector2(100, 620)
+
+[node name="EnemyHumanoid" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(600, 660)
+
+[node name="EnemyHumanoid2" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(1400, 660)
+
+[node name="EnemyFlying" parent="." instance=ExtResource("3_flying")]
+position = Vector2(950, 420)
