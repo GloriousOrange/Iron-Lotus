@@ -9,9 +9,34 @@ for implementation.
 
 ## Status
 
-**Concept/design phase.** No code, no repo history yet — this is the design
-reference the team (4 friends + the project owner, all collaborating via
-Claude) will build from once the concept is fleshed out.
+**Concept/design phase.** No game code yet — this is the design reference
+the team (4 friends + the project owner, all collaborating via Claude)
+will build from once the concept is fleshed out.
+
+## Lore
+
+**The House of the Iron Lotus** is a clan dedicated to fighting the
+Demonic Scourge — demons are spreading across the world, and the House is
+one of the forces standing against them. (Likely the game's actual title.)
+Members join it by very different paths:
+
+- The **Ninja** and the **Kimono Girl** are a couple — professional
+  thieves. Her elemental magic comes from a set of enchanted items the
+  pair stole during a job. They were eventually captured by the
+  authorities and given a choice: execution, or serve the Iron Lotus until
+  death. They're conscripts, not volunteers.
+- The **Knight** and the **Priest** come from a far-away land. They
+  traveled East seeking the source of the Demonic Corruption and joined
+  the House of the Iron Lotus voluntarily, out of purpose rather than
+  punishment.
+- The **Viking** and the **Seidr Witch** — backstory not yet defined (open
+  item below).
+
+This sets up a tonal contrast worth keeping in mind for writing/dialogue:
+conscripted criminals fighting alongside true-believer crusaders, all
+under the same banner. The Viking pair's motivation/path into the House is
+still an open question — worth deciding whether they echo one of the
+existing two patterns (conscript vs. volunteer) or introduce a third.
 
 ## Pillars
 
@@ -21,13 +46,16 @@ Claude) will build from once the concept is fleshed out.
   distant crashing waves scrolling slower than the walkable foreground).
 - Hard but fair — Souls-adjacent difficulty via enemy patterns and precise
   play, not stat-checks.
-- Local couch co-op, multiple very differently-controlled characters
-  (currently Ninja, Knight, Kimono Girl).
+- Local couch co-op, multiple very differently-controlled characters,
+  organized as three pairs (skill fighter + spellcaster): Ninja/Kimono
+  Girl, Knight/Priest, Viking/Seidr Witch.
 - Godot 4, PC-only for the initial build (no online netcode, no mobile).
 
 ## Characters
 
 ### Ninja
+- Backstory: professional thief, partner of the Kimono Girl (see Lore
+  above).
 - Agile: wall-climb, slide, wall-jump, dodge-roll.
 - Primary (melee) — pick **two** per level, swappable mid-level via button:
   **katana, double sais, staff, nun-chucks**.
@@ -38,12 +66,25 @@ Claude) will build from once the concept is fleshed out.
   instead.
 - Ranged use: stuns for ~1s, or kills light enemies outright.
 
+### Viking
+- Backstory: partner of the Seidr Witch — not yet defined (open item below).
+- Primary (melee) — pick **two** per level, swappable mid-level via button:
+  **double axes, spear, sword and shield, two-handed maul**.
+- Secondary (ranged, limited ammo) — pick **one** per level, locked for the
+  whole level: **throwing axes, heavy rock, throwing knives**.
+- Blocking/defense specifics not yet defined (open item below) — presumably
+  sword+shield offers a block like the Knight's, with dodge-roll as the
+  universal fallback for the other loadouts.
+
 ### Knight
+- Backstory: traveled from a far-away land with the Priest, seeking the
+  source of the Demonic Corruption; joined the House of the Iron Lotus
+  voluntarily (see Lore above).
 - Armored, no wall-climb, but can wall-jump. Dodge-roll available
   regardless of loadout.
 - Primary (melee) — pick **two** per level, swappable mid-level via button:
   - One-handed + shield: **sword, mace, flail** (each paired with a shield)
-  - Two-handed (no shield): **maul, battle axe**
+  - Two-handed (no shield): **battle axe** (maul reassigned to the Viking)
 - Secondary (ranged, limited ammo) — pick **one** per level, locked for the
   whole level: **bow and arrows, crossbow, throwing axes**.
 - Shield block is aimable in three directions via the block button: held
@@ -51,6 +92,9 @@ Claude) will build from once the concept is fleshed out.
   angled diagonally. Only available on one-handed+shield loadouts.
 
 ### Kimono Girl (elemental spellcaster)
+- Backstory: professional thief, partner of the Ninja (see Lore above). Her
+  magic comes from enchanted items stolen during a heist — possibly the
+  fans themselves.
 - Melee: **chopsticks or hairpin** (TBD which, or possibly both as
   alternative skins/options) — elemental, single loadout for the whole
   level. Infinite uses, but each spell configuration has its own cooldown
@@ -72,7 +116,7 @@ Claude) will build from once the concept is fleshed out.
 | Element | Instant | Charged | Channeled |
 |---|---|---|---|
 | Fire+Fire | Quick fireball / fire-slash burst | Slow-charging fireball, heavy damage | Continuous flamethrower |
-| Water+Water | Water-jet burst, short knockback | High-pressure piercing water spike | Continuous water stream (pushback; douses fire hazards) |
+| Water+Water | Water-jet burst, short knockback | Grows a bubble while held; releasing launches it to slowly seek out an enemy and explode on impact — bigger bubble (longer hold) = more damage | Continuous water stream (pushback; douses fire hazards) |
 | Wind+Wind (Tornado) | Gust burst, knockback/interrupt | Small tornado launched forward, pulls enemies in then damages | Aimable vortex anchored in front of the player — can be pointed forward, upward, or diagonally; continuously juggles/damages light enemies caught inside |
 | Earth+Earth | Quick rock-shard throw | Heavy AoE boulder slam | Rising stone spikes / stationary rock wall (defensive cover) |
 
@@ -102,6 +146,120 @@ choices: melee spell, fan 1 spell, fan 2 spell). Melee is cooldown-based
   cooldown per mode) — concept/effect level only for now.
 - Whether chopsticks vs. hairpin is a real choice (two distinct melee
   weapons) or just a cosmetic/flavor decision for one weapon.
+
+### Priest (Aspect-based spellcaster)
+- Backstory: traveled from a far-away land with the Knight, seeking the
+  source of the Demonic Corruption; joined the House of the Iron Lotus
+  voluntarily (see Lore above).
+- Melee: **Aspergillum** (a holy-water sprinkler) — Aspect-infused, single
+  loadout for the whole level, cooldown-based (infinite uses, stronger
+  spells → longer cooldown). Uses the same combo matrix as the books
+  (below), configured independently.
+- Ranged: **two books** — a **Holy Book** and a **Necronomicon** — in
+  place of the Kimono Girl's fans. Each independently configured, swappable
+  mid-level via a button press, drawing from a shared regenerating **mana
+  pool**.
+- **Spell-building system**: mirrors the Kimono Girl's exactly, but with
+  different vocabulary — select two **Aspects** (repeats allowed) from
+  **Body, Mind, Spirit, Blood**, plus a **Mode**: **Order**, **Chaos**, or
+  **Balance**. Aspect order never matters (Mind+Body == Body+Mind).
+
+#### Aspect Combo Matrix (complete: 10 pairs x 3 modes = 30 spells)
+
+**Pure pairs:**
+
+| Aspect | Order | Chaos | Balance |
+|---|---|---|---|
+| Mind+Mind | Telekinetic blast that pushes enemies — extra damage if pushed into a wall or another enemy | Telekinetic explosion damaging everyone on screen, including the Priest himself | Aura granting increased attack speed to self and teammates/summons |
+| Body+Body | Hardened Flesh — temporary armor | Become muscular, deliver powerful punches at a health cost | Slow health regeneration |
+| Spirit+Spirit | Spirit Ward — temporary shield | Soul Sunder — projectile that silences magic users (can't cast for a duration) | Soul Tether — whichever player has lower health heals up to the other player's level over time |
+| Blood+Blood | Blood Sabre — a red saber that heals the user a little on each hit landed on a bleeding enemy (some enemies, like golems and skeletons, don't bleed) | Corpse Explosion — a fallen enemy explodes, damaging nearby enemies | Red aura that heals allies and harms enemies it touches |
+
+**Mixed pairs:**
+
+Aspect order never matters (Mind+Body == Body+Mind).
+
+| Aspects | Order | Chaos | Balance |
+|---|---|---|---|
+| Mind+Body | Dominion — take control of a standard enemy (won't work on powerful enemies) | Mind Fever — target enemy becomes 2x speed and attacks allies or foes at random | Self-use only: trades the Priest's own health/mana, whichever is higher moving to whichever is lower, until equal |
+| Mind+Spirit | Revelation — a hovering orb that sheds light and highlights enemy weak points | Aura granting allies random temporary boosts (higher jumps, faster attacks, more damage, or slow HP/mana regen) | Clarity Aura — reduces cooldowns for the whole team |
+| Mind+Blood | Blood Sigil — a trap that damages and burns the mana of a foe caught in it for a duration | Blood Star — a red star projectile that steals health | Contagious Suffering — a dark aura that makes affected enemies share a single health pool |
+| Body+Spirit | Ascension — temporary flight | Summon a Winged Gargoyle to fight enemies | Slow health and mana regeneration |
+| Body+Blood | Blood Armor — red orbs spin around you, absorbing hits and popping when struck | Blood Whip — a whip of blood from the hand, high damage at a health cost | Fully heal a downed teammate |
+| Spirit+Blood | Summon a Ghost to fight enemies | Summon a Zombie to fight enemies | Drain enemy life into orbs that player characters can pick up to heal from |
+
+The same matrix drives both the Aspergillum (melee) and the two books, but
+all three are configured independently at level start (3 separate loadout
+choices: melee spell, Holy Book spell, Necronomicon spell). Melee is
+cooldown-based (per-spell cooldown, infinite uses); books draw from the
+shared mana pool.
+
+**Resolved:** the Holy Book and Necronomicon aren't a gameplay restriction —
+they're a visual "prop swap." Whichever book matches the spell being cast
+is the one the Priest pulls out automatically: the blue Holy Book for holy
+spells, the black Necronomicon for dark spells. (Likely maps to Order =
+holy/blue, Chaos = dark/black; Balance's book is still open — could go
+either way per spell, or have its own visual treatment.)
+
+**Still open:**
+- Which book Balance-mode spells pull (context-dependent per spell, a
+  dedicated "neutral" treatment, or always defaults to one book).
+- Melee-specific (Aspergillum) meaning of Order/Chaos/Balance where effects
+  above were written with book/ranged delivery in mind.
+- Numeric tuning (damage, durations, mana cost/cooldown per mode, shared
+  health-pool mechanics for Contagious Suffering, etc.) — concept/effect
+  level only for now.
+
+### Seidr Witch (Norse spellcaster)
+- Backstory: partner of the Viking — not yet defined (open item below).
+- Melee: **Seidr Staff** — cosmetic variants under discussion (crescent-moon
+  staff, gemmed wooden staff, or crystal-tipped metal rod; TBD which, same
+  open question as the Kimono Girl's chopsticks/hairpin). Aspect-infused,
+  single loadout for the whole level, cooldown-based (infinite uses,
+  stronger spells → longer cooldown). Uses the same combo matrix below.
+- Casting: **single casting method**, no dual-item split like the fans/
+  books — unlike Kimono Girl and Priest, she has only **one** configured
+  spell for her ranged/cast slot (not two), presumably drawing from a
+  regenerating mana pool like the others (open item: confirm mana vs. some
+  other resource).
+- **Spell-building system**: select two **Aspects** (repeats allowed) from
+  **Storm, Beast, Poison, Berserk**, plus a **Mode**: **Shout**, **Rune**,
+  or **Alchemy**. Aspect order never matters.
+
+#### Aspect Combo Matrix (complete: 10 pairs x 3 modes = 30 spells)
+
+**Pure pairs:**
+
+| Aspect | Shout | Rune | Alchemy |
+|---|---|---|---|
+| Storm+Storm | Thunder Scream — a lightning bolt shoots from the mouth, knocking enemies back and damaging them | Thor's Rune — a placed rune attracts lightning strikes to its location | Storm Vial — a storm cloud follows the player, striking lightning at her feet at random times, hitting any enemy in between |
+| Beast+Beast | Primal Howl — summons two wolves to fight enemies | Murder of Crows — a placed rune draws a crow swarm that causes damage | Beast Blood Elixir — a drinkable potion that temporarily turns her into a werewolf |
+| Poison+Poison | Venom Spit — spits black poison onto an enemy, draining health slowly | Rune of Wither — a placed rune damages enemies who stand near it | Plague Brew — a throwable vial that breaks on impact, leaving a puddle and a poisonous gas cloud that poisons enemies who touch it |
+| Berserk+Berserk | War Scream — boosts damage for the whole team | Frenzy Rune — a placed rune gives enemies who touch it double attack speed but double damage taken | Drinkable potion that doubles attack speed for a duration |
+
+**Mixed pairs:**
+
+Aspect order never matters (Storm+Poison == Poison+Storm).
+
+| Aspects | Shout | Rune | Alchemy |
+|---|---|---|---|
+| Storm+Poison | Sunder Voice — weakens and breaks the armor of the nearest enemy | Serpent Rune — summons a venomous snake that strikes and badly poisons anyone who comes near | Releases poisonous clouds that rain acid, destroying the armor of any enemy on screen |
+| Storm+Berserk | A violent thunderstorm that pushes enemies in random directions and damages them | A placed rune starts a tornado that tosses enemies upward and damages them | Stormfury Elixir — a drinkable potion that adds lightning damage to self and allies |
+| Beast+Poison | Summons a swarm of bees that damage and poison multiple enemies | A placed rune summons a swarm of poisonous bats at that location | Plague Beast Tonic — a drinkable potion that turns her into a lizard person that inflicts poison on hit |
+| Beast+Berserk | Primal Rage — summons a Cave Bear to fight for her | Rune of Rage — a placed rune gives allies standing in it a damage and attack-speed increase | A drinkable potion that turns her into a huge eagle |
+| Poison+Berserk | Vile Shriek — poisons allies but grants them temporary increased movement and attack speed | A placed rune that badly poisons enemies who touch it, but also gives them increased attack and movement speed (risk/reward trap) | A drinkable potion that turns her into a venom-spitting velociraptor |
+
+**Still open:**
+- Confirm resource for her single cast slot (mana pool like the others, or
+  something distinct).
+- Melee-specific (Seidr Staff) meaning of Shout/Rune/Alchemy where effects
+  above were written with ranged/cast delivery in mind.
+- Seidr Staff's final cosmetic form (crescent moon / gemmed wood / crystal
+  rod) and whether it's a real choice or flavor-only.
+- Viking/Seidr Witch backstory and how it parallels or contrasts the other
+  two pairs (conscripts vs. volunteers).
+- Numeric tuning (damage, DOT/poison ticks, durations, mana cost/cooldown
+  per mode) — concept/effect level only for now.
 
 ## Universal Combat Rules
 
@@ -172,5 +330,10 @@ are curated by the project owner directly, not invented ad hoc.
 - Ammo pickup mechanics as a supplement to passive regen (optional, TBD).
 - Kimono Girl melee delivery-mode flavor, balance pass, and numeric tuning
   (see above).
+- Priest melee (Aspergillum) delivery-mode flavor, numeric tuning, and
+  which book Balance-mode spells pull (see above).
+- Seidr Witch melee/cast-resource/cosmetic details and Viking/Seidr Witch
+  backstory (see above); Viking's blocking/defense specifics (sword+shield
+  presumed to block like the Knight, unconfirmed).
 - Repo/engine scaffolding (Godot 4 project skeleton) and a CLAUDE.md for
   contributor consistency — planned once the design is further along.
