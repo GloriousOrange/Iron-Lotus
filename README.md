@@ -348,11 +348,16 @@ A visual arc where each level teases the next:
 
 1. **Feudal Japan/China exterior** — traditional aesthetic, a giant temple
    visible in the background (parallax). Target pacing: roughly a
-   10-minute level. Built out in code as ~7200px of ground with two
-   mandatory wall-climb obstacles, an ascending 3-platform staircase, a
-   wall-jump corridor (two parallel walls), an optional elevated
-   platform gauntlet near the end, 2 checkpoints, and 8 humanoid + 4
-   flying placeholder enemies spread across it.
+   10-minute level. **Generated procedurally from data in
+   `scripts/levels/Level1.gd`** (a deterministic seed, so the layout is
+   stable) rather than hand-placed nodes, so it can be long and easy to
+   tune. Currently ~32,000px of left-to-right content built from a mix of
+   segment types — flat combat stretches, brute arenas, ascending
+   platform stairs, wall-climb obstacles, wall-jump shafts, and bridged
+   pits — with 5 checkpoints and ~52 placeholder enemies (25 humanoid, 19
+   flying, 8 brutes). Falling into a pit respawns at the last checkpoint.
+   Length/segment-mix/enemy-density constants at the top of Level1.gd are
+   the tuning knobs; exact 10-minute pacing still needs playtest tuning.
 2. **Inside the temple** — large golden statues as set dressing/possible
    environmental hazards or boss elements.
 3. **Mountainous region with a climbable waterfall** — platforms are rock
@@ -370,6 +375,15 @@ per the Norse arc, sea creatures). Boss fights include giants that are
 partly part of the environment (e.g. a boss built into the temple or
 castle architecture). Specific enemy/boss rosters are curated by the
 project owner directly, not invented ad hoc.
+
+Placeholder enemy archetypes exist in code as greybox stand-ins (to be
+replaced by curated designs + Pixellabs art): **humanoid** (ground
+patrol/chase/melee), **flying** (air patrol, dives at the player), and
+**brute** — a large creature that is slow but high-HP and hard-hitting,
+telegraphs a wind-up before its heavy swing, and is *not* "light," so
+ninja stars only stun/chip it rather than killing it outright. The brute
+is a mini-threat, not a boss; the giant environmental bosses are still
+undesigned.
 
 ## Progression
 

@@ -23,6 +23,7 @@ const VISUAL_SCALE_X := 1.0       ## fixed magnitude -- never derived from itsel
 const MELEE_HITBOX_OFFSET_X := 23.0
 
 const MAX_HEALTH := 100.0
+const FALL_LIMIT := 1200.0        ## y below which a fall counts as death
 const THROW_AMMO_MAX := 8
 const THROW_AMMO_REGEN_SECONDS := 3.0   ## +1 ammo every N seconds
 const NINJA_STAR_SCENE := preload("res://scenes/player/NinjaStar.tscn")
@@ -111,6 +112,12 @@ func _physics_process(delta: float) -> void:
 	_attack_cd = max(0.0, _attack_cd - delta)
 	_dodge_cd = max(0.0, _dodge_cd - delta)
 	_regen_ammo(delta)
+
+	# Fell into a pit -> die/respawn at the last checkpoint. FALL_LIMIT sits
+	# well below the ground plane (~700) and off-screen.
+	if global_position.y > FALL_LIMIT:
+		_die()
+		return
 
 	if _dodging:
 		_process_dodge(delta)
