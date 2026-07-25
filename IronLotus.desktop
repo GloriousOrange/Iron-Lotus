@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Iron Lotus
+Comment=Dark 2D co-op platformer -- Ninja, Knight, Viking vs. the Demonic Scourge
+Exec=/home/josh/bin/godot --path /home/josh/Projects/Iron-Lotus scenes/Main.tscn
+Path=/home/josh/Projects/Iron-Lotus
+Icon=/home/josh/Projects/Iron-Lotus/assets/icon.png
+Terminal=false
+Categories=Game;ActionGame;
+StartupNotify=true
