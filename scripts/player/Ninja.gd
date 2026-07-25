@@ -19,6 +19,8 @@ const DODGE_SPEED := 420.0
 const DODGE_DURATION := 0.25
 const DODGE_COOLDOWN := 0.6
 const DODGE_IFRAMES := 0.2
+const VISUAL_SCALE_X := 1.0       ## fixed magnitude -- never derived from itself
+const MELEE_HITBOX_OFFSET_X := 23.0
 
 const MAX_HEALTH := 100.0
 const THROW_AMMO_MAX := 8
@@ -130,15 +132,21 @@ func _physics_process(delta: float) -> void:
 			var n := get_wall_normal()
 			velocity.x = n.x * WALL_JUMP_VELOCITY.x
 			velocity.y = WALL_JUMP_VELOCITY.y
-			facing = signi(n.x)
+			facing = -1 if n.x < 0.0 else 1
 
 	if _blocking:
 		velocity.x = 0.0
 	elif not climbing:
 		var input_dir := Input.get_axis("move_left", "move_right")
 		velocity.x = input_dir * MOVE_SPEED
-		if input_dir != 0.0:
-			facing = signi(input_dir)
+		# Deadzone-gated so gamepad axis noise near zero can never register as a
+		# direction change -- facing must only ever be +1 or -1, never 0 (a
+		# stray 0 here used to permanently zero out the sprite's scale, see
+		# _update_facing).
+		if input_dir > 0.2:
+			facing = 1
+		elif input_dir < -0.2:
+			facing = -1
 	else:
 		velocity.x = 0.0
 
@@ -157,8 +165,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _update_facing() -> void:
-	sprite.scale.x = abs(sprite.scale.x) * facing
-	melee_hitbox.position.x = abs(melee_hitbox.position.x) * facing
+	sprite.scale.x = VISUAL_SCALE_X * facing
+	melee_hitbox.position.x = MELEE_HITBOX_OFFSET_X * facing
 
 
 func _start_dodge() -> void:

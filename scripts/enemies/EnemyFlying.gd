@@ -9,6 +9,7 @@ const ATTACK_RANGE := 30.0
 const ATTACK_COOLDOWN := 1.2
 const BOB_HEIGHT := 14.0
 const BOB_SPEED := 2.0
+const VISUAL_SCALE_X := 1.0   ## fixed magnitude -- never derived from itself
 
 var _home_y := 0.0
 var _t := 0.0
@@ -47,7 +48,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = _dir * PATROL_SPEED
 		velocity.y = cos(_t * BOB_SPEED) * BOB_HEIGHT - (global_position.y - _home_y)
 
-	if velocity.x != 0.0:
-		scale.x = abs(scale.x) * signi(velocity.x)
+	# Deadzone-gated so a near-vertical dive (velocity.x close to 0) can never
+	# collapse the facing direction to 0 -- that would permanently zero
+	# scale.x via a self-referential formula and hide the enemy for good.
+	# Keep the previous facing direction instead of flipping on tiny values.
+	if velocity.x > 1.0:
+		_dir = 1
+	elif velocity.x < -1.0:
+		_dir = -1
+	scale.x = VISUAL_SCALE_X * _dir
 
 	move_and_slide()

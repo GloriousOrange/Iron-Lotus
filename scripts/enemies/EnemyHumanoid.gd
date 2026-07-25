@@ -9,6 +9,7 @@ const CHASE_SPEED := 110.0
 const AGGRO_RANGE := 220.0
 const ATTACK_RANGE := 34.0
 const ATTACK_COOLDOWN := 1.0
+const VISUAL_SCALE_X := 1.0   ## fixed magnitude -- never derived from itself
 
 @onready var ledge_check: RayCast2D = $LedgeCheck
 @onready var wall_check: RayCast2D = $WallCheck
@@ -45,7 +46,14 @@ func _physics_process(delta: float) -> void:
 		in_aggro = global_position.distance_to(_player.global_position) <= AGGRO_RANGE
 
 	if in_aggro:
-		_dir = signi(to_player) if to_player != 0.0 else _dir
+		# Deadzone-gated: a near-zero `to_player` (enemy almost exactly aligned
+		# with the player) must never collapse `_dir` to 0 -- that would
+		# permanently zero `scale.x` below (self-referential formula) and
+		# freeze/hide the enemy for good. Keep the previous direction instead.
+		if to_player > 1.0:
+			_dir = 1
+		elif to_player < -1.0:
+			_dir = -1
 		velocity.x = _dir * CHASE_SPEED
 		if abs(to_player) <= ATTACK_RANGE and _attack_cd <= 0.0:
 			_attack()
@@ -54,8 +62,7 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor() and (not ledge_check.is_colliding() or wall_check.is_colliding()):
 			_dir *= -1
 
-	if _dir != 0:
-		scale.x = abs(scale.x) * _dir
+	scale.x = VISUAL_SCALE_X * _dir
 
 	move_and_slide()
 
