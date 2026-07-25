@@ -328,7 +328,11 @@ scheme above is the primary target.
   Losing a life respawns you at the last checkpoint; running out of lives
   restarts the level.
 - Checkpoints: 1 per level for standard levels, 2 for extra-long levels —
-  roughly at the halfway point(s).
+  roughly at the halfway point(s). A basic version exists in code: a
+  Checkpoint trigger updates the player's respawn point on contact; the
+  lives/retry-limit system around it is still just a placeholder (health
+  resets and you respawn at the last checkpoint on death, no limited
+  retries yet).
 - Co-op: exact life-sharing/revive rules between the two players not yet
   decided (open item below).
 
@@ -343,7 +347,12 @@ item below), but tracking them that way for now.
 A visual arc where each level teases the next:
 
 1. **Feudal Japan/China exterior** — traditional aesthetic, a giant temple
-   visible in the background (parallax).
+   visible in the background (parallax). Target pacing: roughly a
+   10-minute level. Built out in code as ~7200px of ground with two
+   mandatory wall-climb obstacles, an ascending 3-platform staircase, a
+   wall-jump corridor (two parallel walls), an optional elevated
+   platform gauntlet near the end, 2 checkpoints, and 8 humanoid + 4
+   flying placeholder enemies spread across it.
 2. **Inside the temple** — large golden statues as set dressing/possible
    environmental hazards or boss elements.
 3. **Mountainous region with a climbable waterfall** — platforms are rock

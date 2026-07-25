@@ -1,18 +1,28 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Ninja.tscn" id="1_ninja"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyHumanoid.tscn" id="2_humanoid"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyFlying.tscn" id="3_flying"]
 [ext_resource type="Script" path="res://scripts/levels/Level1.gd" id="4_level1_script"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Checkpoint.tscn" id="5_checkpoint"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(2000, 40)
+size = Vector2(7200, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(24, 140)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wallclimb"]
+size = Vector2(24, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_walljump"]
+size = Vector2(24, 200)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
 size = Vector2(200, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stair"]
+size = Vector2(160, 24)
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("4_level1_script")
@@ -23,6 +33,7 @@ script = ExtResource("4_level1_script")
 
 [node name="FarLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(4000, 0)
 
 [node name="TempleSilhouette" type="Polygon2D" parent="ParallaxBackground/FarLayer"]
 color = Color(0.35, 0.28, 0.15, 1)
@@ -30,6 +41,7 @@ polygon = PackedVector2Array(300, 500, 340, 380, 380, 500, 420, 340, 460, 500, 5
 
 [node name="NearLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.6, 0.6)
+motion_mirroring = Vector2(1600, 0)
 
 [node name="HillSilhouette" type="Polygon2D" parent="ParallaxBackground/NearLayer"]
 color = Color(0.25, 0.2, 0.1, 1)
@@ -37,14 +49,14 @@ polygon = PackedVector2Array(0, 620, 200, 560, 500, 600, 800, 540, 1100, 610, 14
 
 [node name="Ground" type="StaticBody2D" parent="."]
 collision_layer = 1
-position = Vector2(1000, 700)
+position = Vector2(3600, 700)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="Polygon2D" parent="Ground"]
 color = Color(0.2, 0.18, 0.12, 1)
-polygon = PackedVector2Array(-1000, -20, 1000, -20, 1000, 20, -1000, 20)
+polygon = PackedVector2Array(-3600, -20, 3600, -20, 3600, 20, -3600, 20)
 
 [node name="Wall" type="StaticBody2D" parent="."]
 collision_layer = 1
@@ -68,6 +80,118 @@ shape = SubResource("RectangleShape2D_platform")
 color = Color(0.28, 0.22, 0.14, 1)
 polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
 
+[node name="WallClimb" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(2200, 550)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallClimb"]
+shape = SubResource("RectangleShape2D_wallclimb")
+
+[node name="Visual" type="Polygon2D" parent="WallClimb"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-12, -130, 12, -130, 12, 130, -12, 130)
+
+[node name="Checkpoint1" parent="." instance=ExtResource("5_checkpoint")]
+position = Vector2(2600, 630)
+
+[node name="StairPlatform1" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(3200, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StairPlatform1"]
+shape = SubResource("RectangleShape2D_stair")
+
+[node name="Visual" type="Polygon2D" parent="StairPlatform1"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-80, -12, 80, -12, 80, 12, -80, 12)
+
+[node name="StairPlatform2" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(3420, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StairPlatform2"]
+shape = SubResource("RectangleShape2D_stair")
+
+[node name="Visual" type="Polygon2D" parent="StairPlatform2"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-80, -12, 80, -12, 80, 12, -80, 12)
+
+[node name="StairPlatform3" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(3640, 440)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StairPlatform3"]
+shape = SubResource("RectangleShape2D_stair")
+
+[node name="Visual" type="Polygon2D" parent="StairPlatform3"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-80, -12, 80, -12, 80, 12, -80, 12)
+
+[node name="WallJumpA" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(4300, 580)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallJumpA"]
+shape = SubResource("RectangleShape2D_walljump")
+
+[node name="Visual" type="Polygon2D" parent="WallJumpA"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-12, -100, 12, -100, 12, 100, -12, 100)
+
+[node name="WallJumpB" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(4470, 580)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallJumpB"]
+shape = SubResource("RectangleShape2D_walljump")
+
+[node name="Visual" type="Polygon2D" parent="WallJumpB"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-12, -100, 12, -100, 12, 100, -12, 100)
+
+[node name="Checkpoint2" parent="." instance=ExtResource("5_checkpoint")]
+position = Vector2(5300, 630)
+
+[node name="GauntletPlatform1" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(6200, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GauntletPlatform1"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Visual" type="Polygon2D" parent="GauntletPlatform1"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
+
+[node name="GauntletPlatform2" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(6450, 560)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GauntletPlatform2"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Visual" type="Polygon2D" parent="GauntletPlatform2"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
+
+[node name="GauntletPlatform3" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(6700, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GauntletPlatform3"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Visual" type="Polygon2D" parent="GauntletPlatform3"]
+color = Color(0.28, 0.22, 0.14, 1)
+polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
+
+[node name="LevelEndGate" type="Node2D" parent="."]
+position = Vector2(7100, 680)
+
+[node name="Visual" type="Polygon2D" parent="LevelEndGate"]
+color = Color(0.2, 0.15, 0.1, 1)
+polygon = PackedVector2Array(-70, 0, -50, 0, -50, -180, -70, -180, 70, 0, 50, 0, 50, -180, 70, -180, -60, -160, 60, -160, -60, -130, 60, -130)
+
 [node name="Ninja" parent="." instance=ExtResource("1_ninja")]
 position = Vector2(100, 620)
 
@@ -75,7 +199,34 @@ position = Vector2(100, 620)
 position = Vector2(600, 660)
 
 [node name="EnemyHumanoid2" parent="." instance=ExtResource("2_humanoid")]
-position = Vector2(1400, 660)
+position = Vector2(1500, 660)
+
+[node name="EnemyHumanoid3" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(1900, 660)
+
+[node name="EnemyHumanoid4" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(3000, 660)
+
+[node name="EnemyHumanoid5" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(3900, 660)
+
+[node name="EnemyHumanoid6" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(5000, 660)
+
+[node name="EnemyHumanoid7" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(5350, 660)
+
+[node name="EnemyHumanoid8" parent="." instance=ExtResource("2_humanoid")]
+position = Vector2(5600, 660)
 
 [node name="EnemyFlying" parent="." instance=ExtResource("3_flying")]
 position = Vector2(950, 420)
+
+[node name="EnemyFlying2" parent="." instance=ExtResource("3_flying")]
+position = Vector2(2300, 380)
+
+[node name="EnemyFlying3" parent="." instance=ExtResource("3_flying")]
+position = Vector2(4400, 450)
+
+[node name="EnemyFlying4" parent="." instance=ExtResource("3_flying")]
+position = Vector2(6500, 500)

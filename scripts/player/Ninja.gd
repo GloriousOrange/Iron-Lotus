@@ -49,6 +49,7 @@ var _dodge_t := 0.0
 var _dodge_cd := 0.0
 var _iframes_t := 0.0
 var _blocking := false
+var _respawn_point: Vector2
 
 
 func _ready() -> void:
@@ -56,6 +57,11 @@ func _ready() -> void:
 	_build_weapons()
 	melee_hitbox.monitoring = false
 	melee_hitbox.body_entered.connect(_on_melee_hit)
+	_respawn_point = global_position
+
+
+func set_checkpoint(pos: Vector2) -> void:
+	_respawn_point = pos
 
 
 func _build_weapons() -> void:
@@ -230,5 +236,8 @@ func take_hit(amount: float) -> void:
 
 
 func _die() -> void:
-	# Placeholder: real lives/checkpoint system is a later pass (see README).
+	# Placeholder: real lives system (limited retries per level) is a later
+	# pass -- see README. For now, just respawn at the last checkpoint.
 	health = MAX_HEALTH
+	velocity = Vector2.ZERO
+	global_position = _respawn_point
