@@ -29,14 +29,14 @@ Members join it by very different paths:
   traveled East seeking the source of the Demonic Corruption and joined
   the House of the Iron Lotus voluntarily, out of purpose rather than
   punishment.
-- The **Viking** and the **Seidr Witch** — backstory not yet defined (open
-  item below).
+- The **Viking** and the **Seidr Witch** were warriors from the far
+  northern mountains. Like the Knight and Priest, they came looking for
+  the source of the Demonic uprising and joined the House of the Iron
+  Lotus voluntarily.
 
 This sets up a tonal contrast worth keeping in mind for writing/dialogue:
-conscripted criminals fighting alongside true-believer crusaders, all
-under the same banner. The Viking pair's motivation/path into the House is
-still an open question — worth deciding whether they echo one of the
-existing two patterns (conscript vs. volunteer) or introduce a third.
+conscripted criminals fighting alongside true-believer crusaders (two of
+the latter, from two different distant lands), all under the same banner.
 
 ## Pillars
 
@@ -67,7 +67,9 @@ existing two patterns (conscript vs. volunteer) or introduce a third.
 - Ranged use: stuns for ~1s, or kills light enemies outright.
 
 ### Viking
-- Backstory: partner of the Seidr Witch — not yet defined (open item below).
+- Backstory: warrior from the far northern mountains, partner of the Seidr
+  Witch; came seeking the source of the Demonic uprising and joined the
+  House of the Iron Lotus voluntarily (see Lore above).
 - Primary (melee) — pick **two** per level, swappable mid-level via button:
   **double axes, spear, sword and shield, two-handed maul**.
 - Secondary (ranged, limited ammo) — pick **one** per level, locked for the
@@ -211,7 +213,9 @@ either way per spell, or have its own visual treatment.)
   level only for now.
 
 ### Seidr Witch (Norse spellcaster)
-- Backstory: partner of the Viking — not yet defined (open item below).
+- Backstory: warrior from the far northern mountains, partner of the
+  Viking; came seeking the source of the Demonic uprising and joined the
+  House of the Iron Lotus voluntarily (see Lore above).
 - Melee: **Seidr Staff** — cosmetic variants under discussion (crescent-moon
   staff, gemmed wooden staff, or crystal-tipped metal rod; TBD which, same
   open question as the Kimono Girl's chopsticks/hairpin). Aspect-infused,
@@ -291,7 +295,13 @@ Aspect order never matters (Storm+Poison == Poison+Storm).
 - Co-op: exact life-sharing/revive rules between the two players not yet
   decided (open item below).
 
-## Levels (first playable vertical slice — 4 levels)
+## Levels
+
+Levels so far seem to be forming into per-pair chapters/arcs rather than
+one single shared list — worth confirming that structure explicitly (open
+item below), but tracking them that way for now.
+
+### Feudal East arc (Ninja / Kimono Girl?) — first playable vertical slice, 4 levels
 
 A visual arc where each level teases the next:
 
@@ -304,10 +314,16 @@ A visual arc where each level teases the next:
    left-to-right. A castle is visible in the distance from the top.
 4. **Inside the castle** — final level of the slice.
 
-Enemies throughout are demons — some humanoid, some creature-like. Boss
-fights include giants that are partly part of the environment (e.g. a boss
-built into the temple or castle architecture). Specific enemy/boss rosters
-are curated by the project owner directly, not invented ad hoc.
+### Norse arc (Viking / Seidr Witch) — 2 levels so far
+
+1. **Beach**.
+2. **A large ship, under attack by sea creatures.**
+
+Enemies throughout are demons — some humanoid, some creature-like (plus,
+per the Norse arc, sea creatures). Boss fights include giants that are
+partly part of the environment (e.g. a boss built into the temple or
+castle architecture). Specific enemy/boss rosters are curated by the
+project owner directly, not invented ad hoc.
 
 ## Progression
 
@@ -327,6 +343,9 @@ are curated by the project owner directly, not invented ad hoc.
 - Exact life-pool size per level, and whether co-op players share a life
   pool or have independent lives with revive-on-death mechanics.
 - Specific enemy roster and boss designs per level (owner to curate).
+- Confirm whether levels are organized as per-pair chapters/arcs (as
+  currently tracked) and which pair the Feudal East arc actually belongs
+  to — assumed Ninja/Kimono Girl by aesthetic fit, never explicitly stated.
 - Ammo pickup mechanics as a supplement to passive regen (optional, TBD).
 - Kimono Girl melee delivery-mode flavor, balance pass, and numeric tuning
   (see above).
