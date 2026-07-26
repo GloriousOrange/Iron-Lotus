@@ -78,7 +78,7 @@ LEVELS = {
          ("wreck_hull", "a broken shipwreck hull plank platform")],
     ),
     "viking_ship": (
-        "aboard a massive viking longship in a storm at sea, planked deck, "
+        "a massive viking longship seen from the side in a storm at sea, "
         "carved dragon-head prow, tall mast and torn sail, rows of round "
         "shields on the gunwale, grey towering waves, dark tempest sky",
         [("deck_plank", "a wooden ship deck plank platform"),
@@ -86,15 +86,25 @@ LEVELS = {
          ("barrel", "a wooden barrel platform"),
          ("mast_beam", "a ship mast crossbeam platform with rope")],
     ),
+    "viking_ship_deck": (
+        "standing ON the deck of a massive viking longship in a storm, view "
+        "down the planked deck toward the dragon-head prow, the tall mast and "
+        "torn sail rising, rows of round shields along the gunwale, oars, sea "
+        "chests, grey towering waves breaking over the sides, dark tempest sky",
+        [("sea_chest", "a wooden viking sea chest platform"),
+         ("shield_rack", "a rack of round viking shields platform"),
+         ("rope_coil", "a coil of thick ship rope platform"),
+         ("oar_stack", "a stack of wooden oars platform")],
+    ),
 }
 
 
-def gen_bg(level: str, prompt: str) -> list[Path]:
+def gen_bg(level: str, prompt: str, seeds=None) -> list[Path]:
     c = g.client()
     out = ASSETS / "backgrounds" / level
     out.mkdir(parents=True, exist_ok=True)
     paths = []
-    for seed in BG_SEEDS:
+    for seed in (seeds or BG_SEEDS):
         d = g.post(c, "generate-image-pixflux", {
             "description": f"{prompt}, {TONE}",
             "negative_description": BG_NEG,
@@ -169,6 +179,16 @@ def do_level(level: str) -> None:
 
 def main() -> None:
     arg = sys.argv[1] if len(sys.argv) > 1 else "all"
+    # Optional: "python bg_gen.py bg-extra 4,5,6" -> extra backdrop seeds for
+    # every level (no platforms), then rebuild sheets.
+    if arg == "bg-extra":
+        seeds = [int(s) for s in sys.argv[2].split(",")]
+        for lv, (prompt, _) in LEVELS.items():
+            print(f"== {lv} extra seeds {seeds} ==")
+            gen_bg(lv, prompt, seeds=seeds)
+            sheet(lv)
+        print("DONE extra", seeds)
+        return
     levels = list(LEVELS) if arg == "all" else [arg]
     for lv in levels:
         do_level(lv)
