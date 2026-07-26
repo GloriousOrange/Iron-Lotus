@@ -9,6 +9,7 @@ Open each level's **`_sheet.png`** — it shows the 3 background variants side b
 side plus the themed jump-platforms on a checker (transparent) background.
 
 ## Levels
+**The environments you asked for** (each 6 backdrop variants + platforms):
 | Folder | Environment |
 |---|---|
 | `euro_exterior`   | European approach — colossal gothic castle looming in the distance |
@@ -18,6 +19,18 @@ side plus the themed jump-platforms on a checker (transparent) background.
 | `norse_beach`     | Scandinavian storm-battered rocky shore |
 | `viking_ship`     | The longship seen from the side (establishing / parallax) |
 | `viking_ship_deck`| ON the ship's deck, looking down toward the dragon prow (playable POV) |
+
+**Bonus environments** (from the design doc + fitting the demon-war arcs; 4 variants each):
+| Folder | Environment |
+|---|---|
+| `mountain_waterfall` | Feudal-East climb — tall vertical gorge + waterfall, distant castle |
+| `castle_courtyard`   | Ruined courtyard / portcullis gate (bridges exterior→interior) |
+| `norse_mountain`     | Snowbound Scandinavian pass, longhouse, frozen falls |
+| `demon_cave`         | Hellish lava-rift cavern (the Demonic Scourge) |
+| `burning_village`    | War-torn village ablaze at night |
+
+**Mood variants:** each of the 7 core landscape levels also has `corrupt_1/2.png`
+— a blood-sky / fire / smoke "demonic corruption" version (see `_overview_corrupted.png`).
 
 ## Files per level
 - `backgrounds/<level>/bg_1.png … bg_6.png` — 400×224 parallax backdrops (6 seed variants).
