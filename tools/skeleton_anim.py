@@ -191,16 +191,23 @@ def _set_arm(rest, ov, side, ang, bend=0.35):
 
 
 def attack_frames(rest, n=3):
-    # Katana slash with the near (LEFT) arm: wind up high-back -> slash
-    # forward-down -> follow-through low. Far arm stays tucked.
-    angles = [-2.3, 0.4, 1.3]     # up-back, forward-down, down
+    # IAIJUTSU draw-cut with the LEFT (near) hand, animated from the drawn-katana
+    # base. The sword hand stays FORWARD of the body the whole time (never
+    # crosses back through him -- that read as self-harm). It sweeps from a
+    # retracted-forward guard out to full forward extension toward the enemy.
+    ext = (rest["LEFT ARM"]["x"], rest["LEFT ARM"]["y"])       # extended (base)
+    ext_el = (rest["LEFT ELBOW"]["x"], rest["LEFT ELBOW"]["y"])
+    ext_sh = (rest["LEFT SHOULDER"]["x"], rest["LEFT SHOULDER"]["y"])
+    # per-frame LEFT (shoulder, elbow, wrist) + body-forward dx. All wrist x >
+    # hip x (~0.53) so the blade always points forward/right, in front of him.
+    poses = [
+        ((0.58, 0.34), (0.60, 0.40), (0.63, 0.38), -0.01),    # drawn, high guard (forward)
+        ((0.59, 0.34), (0.64, 0.42), (0.72, 0.44),  0.02),    # cutting down-forward
+        (ext_sh,        ext_el,       ext,          0.04),    # full forward extension
+    ]
     frames = []
-    for i in range(n):
-        ov = {}
-        _set_arm(rest, ov, "LEFT", angles[i], bend=0.15)
-        _set_arm(rest, ov, "RIGHT", 1.7, bend=0.6)   # off hand tucked back
-        # slight forward lean into the swing on the strike frame
-        dx = [-0.01, 0.02, 0.015][i]
+    for sh, el, wr, dx in poses:
+        ov = {"LEFT SHOULDER": sh, "LEFT ELBOW": el, "LEFT ARM": wr}
         for lbl in ("NOSE", "LEFT EYE", "RIGHT EYE", "LEFT EAR", "RIGHT EAR", "NECK"):
             ov[lbl] = (rest[lbl]["x"] + dx, rest[lbl]["y"])
         frames.append(frame_from(rest, ov))
@@ -251,8 +258,27 @@ ACTIONS = {
 }
 
 
+# Actions that animate from their own base sprite (skeleton + appearance)
+# instead of the default sheathed base -- e.g. attack draws a katana.
+ACTION_BASE = {"attack": "attack_base.png"}
+
+
+def skel_for(base_file: str) -> dict[str, dict]:
+    """Estimate (and cache) the rest skeleton for a given base sprite."""
+    stem = Path(base_file).stem
+    cache = CACHE if stem == "base64" else g.NINJA_DIR / f"{stem}_skel.json"
+    if not cache.exists():
+        c = g.client()
+        ref = Image.open(g.NINJA_DIR / base_file).convert("RGBA")
+        d = g.post(c, "estimate-skeleton", {"image": g.b64_of(ref)})
+        cache.write_text(json.dumps(d["keypoints"], indent=2))
+    kps = json.loads(cache.read_text())
+    return {k["label"]: dict(k) for k in kps}
+
+
 def generate(action: str, n: int | None):
-    rest = rest_pose()
+    base_file = ACTION_BASE.get(action, "base64.png")
+    rest = skel_for(base_file)
     fn = ACTIONS[action]
     frames = fn(rest, n) if n else fn(rest)
     if len(frames) % 3 != 0:
@@ -260,13 +286,16 @@ def generate(action: str, n: int | None):
                          f"(the model is a 3-frame window).")
     c = g.client()
     g.show_balance(c, "before")
-    ref = Image.open(g.NINJA_DIR / "base64.png").convert("RGBA")
+    ref = Image.open(g.NINJA_DIR / base_file).convert("RGBA")
     out = g.NINJA_DIR / action
     out.mkdir(parents=True, exist_ok=True)
     for f in out.glob(f"{action}_*.png"):
         f.unlink()
+    # Actions with big pose deltas (a sword draw-cut) need stronger pose
+    # guidance so the skeleton wins over the reference image's fixed stance.
+    pose_gs = 7.0 if action == "attack" else 3.0
     print(f"Skeleton-animating '{action}' ({len(frames)} frames "
-          f"= {len(frames)//3} window(s) of 3)...")
+          f"= {len(frames)//3} window(s) of 3, pose_gs={pose_gs})...")
     idx = 0
     for w0 in range(0, len(frames), 3):        # chain 3-frame windows
         window = frames[w0:w0 + 3]
@@ -278,7 +307,7 @@ def generate(action: str, n: int | None):
             "direction": "east",
             "reference_image": g.b64_of(ref),
             "reference_guidance_scale": 1.1,
-            "pose_guidance_scale": 3.0,
+            "pose_guidance_scale": pose_gs,
             "seed": 0,
         })
         for im in d["images"]:
