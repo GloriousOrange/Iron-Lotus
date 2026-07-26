@@ -52,6 +52,10 @@ var _iframes_t := 0.0
 var _blocking := false
 var _respawn_point: Vector2
 
+# --- Animation ---
+var _anim_lock_t := 0.0      ## while >0, a one-shot anim (attack/hit) holds
+var _anim_lock := ""
+
 
 func _ready() -> void:
 	add_to_group("player")
@@ -112,6 +116,7 @@ func _physics_process(delta: float) -> void:
 	_attack_cd = max(0.0, _attack_cd - delta)
 	_dodge_cd = max(0.0, _dodge_cd - delta)
 	_regen_ammo(delta)
+	_update_animation(delta)
 
 	# Fell into a pit -> die/respawn at the last checkpoint. FALL_LIMIT sits
 	# well below the ground plane (~700) and off-screen.
@@ -182,6 +187,29 @@ func _update_facing() -> void:
 	melee_hitbox.position.x = MELEE_HITBOX_OFFSET_X * facing
 
 
+func _update_animation(delta: float) -> void:
+	# Pick the clip from current state. One-shot anims (attack/hit) hold via a
+	# lock timer so they play out before movement anims resume. Facing is
+	# handled separately by _update_facing (never derive flip from scale).
+	_anim_lock_t = max(0.0, _anim_lock_t - delta)
+	var desired := "idle"
+	if _anim_lock_t > 0.0:
+		desired = _anim_lock
+	elif _dodging:
+		desired = "dodge"
+	elif not is_on_floor():
+		desired = "jump"
+	elif absf(velocity.x) > 10.0:
+		desired = "run"
+	if sprite.animation != desired or not sprite.is_playing():
+		sprite.play(desired)
+
+
+func _play_oneshot(name: String, hold: float) -> void:
+	_anim_lock = name
+	_anim_lock_t = hold
+
+
 func _start_dodge() -> void:
 	_dodging = true
 	_dodge_t = DODGE_DURATION
@@ -202,6 +230,7 @@ func _process_dodge(delta: float) -> void:
 func _attack(w: WeaponData) -> void:
 	_attack_cd = w.attack_cooldown
 	_active_weapon = w
+	_play_oneshot("attack", 0.28)
 	if melee_hitbox_shape.shape is RectangleShape2D:
 		melee_hitbox_shape.shape.size = Vector2(w.attack_range, 40.0)
 	melee_hitbox.position.x = abs(w.attack_range * 0.5) * facing
@@ -240,6 +269,8 @@ func take_hit(amount: float) -> void:
 	health -= amount
 	if health <= 0.0:
 		_die()
+		return
+	_play_oneshot("hit", 0.25)
 
 
 func _die() -> void:

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://diwe814qyljan"
+path="res://.godot/imported/Iron Temple.mp3-7de1b537a76f4556e7d954c3dcc0048a.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Iron Temple.mp3"
+dest_files=["res://.godot/imported/Iron Temple.mp3-7de1b537a76f4556e7d954c3dcc0048a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
