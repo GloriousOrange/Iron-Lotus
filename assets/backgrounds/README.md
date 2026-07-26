@@ -29,8 +29,20 @@ side plus the themed jump-platforms on a checker (transparent) background.
 | `demon_cave`         | Hellish lava-rift cavern (the Demonic Scourge) |
 | `burning_village`    | War-torn village ablaze at night |
 
+**Boss arenas & connectives** (4 variants each):
+| Folder | Environment |
+|---|---|
+| `castle_throne` | Castle throne-room boss arena — throne, braziers, war banners |
+| `temple_boss`   | Temple inner sanctum — colossal stone guardian statue (env boss) |
+| `norse_harbor`  | Fjord harbor/dock — moored longships (bridges beach→ship) |
+
 **Mood variants:** each of the 7 core landscape levels also has `corrupt_1/2.png`
 — a blood-sky / fire / smoke "demonic corruption" version (see `_overview_corrupted.png`).
+
+---
+**Total:** 15 environments, ~90 backdrops. Start at `_overview.png`, then open any
+level's `_sheet.png`. Nothing is wired into scenes yet — tell me your favorites
+per level and I'll set up the parallax + platforms in-engine.
 
 ## Files per level
 - `backgrounds/<level>/bg_1.png … bg_6.png` — 400×224 parallax backdrops (6 seed variants).
