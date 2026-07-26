@@ -132,18 +132,18 @@ def run_frames(rest, n=6, stride=0.10, lift=0.05):
             foot_y = rest[f"{s} LEG"]["y"] - lift * max(0.0, math.sin(2 * math.pi * phi))
             ov[f"{s} KNEE"] = ik2(hip, (foot_x, foot_y), L[(s, "thigh")], L[(s, "shank")], bend_sign=-1)
             ov[f"{s} LEG"] = (foot_x, foot_y)
-        apply_lean(rest, ov)
+        apply_lean(rest, ov, lean_x=0.10, head_dip=0.02)   # lean into the walk
         frames.append(frame_from(rest, ov, dy=dy))
     return frames
 
 
 def idle_frames(rest, n=3):
+    # Standing: upright and imposing, hand resting on the sheathed hilt (rest
+    # pose already has it there). No forward lean -- that's for walking.
     frames = []
     for i in range(n):
         dy = -0.02 * math.sin(2 * math.pi * i / n)   # gentle breathing bob
-        ov = {}
-        apply_lean(rest, ov)
-        frames.append(frame_from(rest, ov, dy=dy))
+        frames.append(frame_from(rest, {}, dy=dy))
     return frames
 
 
