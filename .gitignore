@@ -2,6 +2,11 @@
 .godot/
 *.translation
 
+# PixelLab art pipeline (never commit secrets or the local venv)
+tools/.pixellab.secrets
+*.secrets
+.venv/
+
 # Exported builds
 /build/
 /export/
