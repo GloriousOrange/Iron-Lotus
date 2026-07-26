@@ -113,6 +113,15 @@ def apply_lean(rest, ov, lean_x=0.06, head_dip=0.015):
         ov[lbl] = (bx + lean_x + extra, by + dip)
 
 
+def hand_on_hilt(rest, ov, shoulder_dip=0.03):
+    # Left hand rests on the sheathed katana's handle at the waist, the left
+    # elbow leading forward (+x), and the left shoulder dipped down. The right
+    # (far) arm stays at rest. This is the imposing "ready to draw" carry.
+    ov["LEFT SHOULDER"] = (0.55, 0.25 + shoulder_dip)
+    ov["LEFT ELBOW"] = (0.67, 0.42)      # elbow juts forward
+    ov["LEFT ARM"] = (0.60, 0.49)        # hand on the hilt at the waist
+
+
 # --- actions ------------------------------------------------------------------
 def run_frames(rest, n=6, stride=0.10, lift=0.05):
     # Legs only, 6-frame cycle for a smooth natural gait (arms stay at rest so
@@ -132,18 +141,21 @@ def run_frames(rest, n=6, stride=0.10, lift=0.05):
             foot_y = rest[f"{s} LEG"]["y"] - lift * max(0.0, math.sin(2 * math.pi * phi))
             ov[f"{s} KNEE"] = ik2(hip, (foot_x, foot_y), L[(s, "thigh")], L[(s, "shank")], bend_sign=-1)
             ov[f"{s} LEG"] = (foot_x, foot_y)
-        apply_lean(rest, ov, lean_x=0.10, head_dip=0.02)   # lean into the walk
+        # Left hand on the hilt; left shoulder dips rhythmically as he walks.
+        hand_on_hilt(rest, ov, shoulder_dip=0.03 + 0.025 * (0.5 + 0.5 * math.sin(2 * math.pi * t)))
         frames.append(frame_from(rest, ov, dy=dy))
     return frames
 
 
 def idle_frames(rest, n=3):
-    # Standing: upright and imposing, hand resting on the sheathed hilt (rest
-    # pose already has it there). No forward lean -- that's for walking.
+    # Standing: upright and imposing, left hand on the sheathed hilt, ready to
+    # draw. No forward lean -- that's for walking.
     frames = []
     for i in range(n):
         dy = -0.02 * math.sin(2 * math.pi * i / n)   # gentle breathing bob
-        frames.append(frame_from(rest, {}, dy=dy))
+        ov = {}
+        hand_on_hilt(rest, ov, shoulder_dip=0.02)
+        frames.append(frame_from(rest, ov, dy=dy))
     return frames
 
 
