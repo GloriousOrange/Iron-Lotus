@@ -1,8 +1,13 @@
 # Level Backgrounds & Platforms (PixelLab, overnight batch)
 
-Generated art for the six planned level environments. Everything is
-programmer-directed placeholder-quality concept art meant for you to pick
-favorites from — not yet wired into any scene.
+Generated art for the planned level environments — 15 environments, ~114
+backdrops. Concept art to pick favorites from; not yet wired into any scene.
+
+### All environments
+![All level environments](_overview.png)
+
+### Demonic-corruption mood variants
+![Corrupted mood variants](_overview_corrupted.png)
 
 ## How to review
 Open each level's **`_sheet.png`** — it shows the 3 background variants side by
