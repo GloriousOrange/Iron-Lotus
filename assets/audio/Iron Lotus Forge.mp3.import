@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://f0rphr0dp0qm"
+path="res://.godot/imported/Iron Lotus Forge.mp3-fbdbdf97e65ba0f6e2cd01e7f8f6eaa9.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Iron Lotus Forge.mp3"
+dest_files=["res://.godot/imported/Iron Lotus Forge.mp3-fbdbdf97e65ba0f6e2cd01e7f8f6eaa9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

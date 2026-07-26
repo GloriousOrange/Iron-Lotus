@@ -98,33 +98,22 @@ def frame_from(rest, overrides, dy=0.0):
 
 
 # --- actions ------------------------------------------------------------------
-def run_frames(rest, n=3, stride=0.17, lift=0.12, arm_swing=1.15):
+def run_frames(rest, n=3, stride=0.17, lift=0.12):
+    # Legs only. Arms stay at rest so his hand keeps resting on the sheathed
+    # weapon as he moves (no arm pumping -- per art direction).
     L = _seglens(rest)
     frames = []
     for i in range(n):
         t = i / n
         ov = {}
-        # global bob: body rises when legs are gathered (2x leg freq)
-        dy = -0.03 * abs(math.sin(2 * math.pi * t))
+        dy = -0.03 * abs(math.sin(2 * math.pi * t))   # body bob (2x leg freq)
         for s, phase0 in (("LEFT", 0.0), ("RIGHT", 0.5)):
             phi = t + phase0
             hip = (rest[f"{s} HIP"]["x"], rest[f"{s} HIP"]["y"])
             foot_x = hip[0] + stride * math.cos(2 * math.pi * phi)
             foot_y = rest[f"{s} LEG"]["y"] - lift * max(0.0, math.sin(2 * math.pi * phi))
-            knee = ik2(hip, (foot_x, foot_y), L[(s, "thigh")], L[(s, "shank")], bend_sign=-1)
-            ov[f"{s} KNEE"] = knee
+            ov[f"{s} KNEE"] = ik2(hip, (foot_x, foot_y), L[(s, "thigh")], L[(s, "shank")], bend_sign=-1)
             ov[f"{s} LEG"] = (foot_x, foot_y)
-            # arm opposite to same-side leg: swing the whole arm about the shoulder
-            sh = (rest[f"{s} SHOULDER"]["x"], rest[f"{s} SHOULDER"]["y"])
-            ang = arm_swing * math.cos(2 * math.pi * (phi + 0.5))     # radians offset
-            base_ang = math.pi / 2                                    # hanging down
-            a = base_ang + ang
-            elbow = (sh[0] + L[(s, "uarm")] * math.cos(a), sh[1] + L[(s, "uarm")] * math.sin(a))
-            # forearm bent forward ~70deg
-            wa = a - 1.2
-            wrist = (elbow[0] + L[(s, "farm")] * math.cos(wa), elbow[1] + L[(s, "farm")] * math.sin(wa))
-            ov[f"{s} ELBOW"] = elbow
-            ov[f"{s} ARM"] = wrist
         frames.append(frame_from(rest, ov, dy=dy))
     return frames
 
@@ -200,7 +189,7 @@ def dodge_frames(rest, n=3):
             foot = (hip[0] + 0.04, rest[f"{s} LEG"]["y"] - foot_up[i])
             ov[f"{s} KNEE"] = ik2(hip, foot, L[(s, "thigh")], L[(s, "shank")], bend_sign=-1)
             ov[f"{s} LEG"] = foot
-            _set_arm(rest, ov, s, 1.9, bend=0.8)     # arms tucked in
+            # arms left at rest -- hand stays on the sheathed weapon
         for lbl in ("NOSE", "LEFT EYE", "RIGHT EYE", "LEFT EAR", "RIGHT EAR", "NECK"):
             ov[lbl] = (rest[lbl]["x"] + lean[i], rest[lbl]["y"] + 0.04)
         frames.append(frame_from(rest, ov, dy=body_dy[i]))

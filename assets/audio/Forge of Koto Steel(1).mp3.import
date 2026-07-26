@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cqui3ltyr7nrh"
+path="res://.godot/imported/Forge of Koto Steel(1).mp3-3595c2114ed039ea2dd906a1ba532a85.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Forge of Koto Steel(1).mp3"
+dest_files=["res://.godot/imported/Forge of Koto Steel(1).mp3-3595c2114ed039ea2dd906a1ba532a85.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
