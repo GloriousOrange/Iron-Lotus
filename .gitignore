@@ -14,3 +14,7 @@ tools/.pixellab.secrets
 *.pck
 *.zip
 *.dmg
+
+# Python
+__pycache__/
+*.pyc
