@@ -97,11 +97,26 @@ def frame_from(rest, overrides, dy=0.0):
     return {"keypoints": kps}
 
 
+# --- shared stance ------------------------------------------------------------
+# Aggressive forward lean: the whole upper body tilts toward +x (facing dir),
+# with the leading (near/LEFT) shoulder pushed forward and the head dipped.
+_UPPER = ("NOSE", "LEFT EYE", "RIGHT EYE", "LEFT EAR", "RIGHT EAR", "NECK",
+          "LEFT SHOULDER", "RIGHT SHOULDER", "LEFT ELBOW", "RIGHT ELBOW",
+          "LEFT ARM", "RIGHT ARM")
+
+
+def apply_lean(rest, ov, lean_x=0.06, head_dip=0.015):
+    for lbl in _UPPER:
+        bx, by = ov.get(lbl, (rest[lbl]["x"], rest[lbl]["y"]))
+        extra = 0.035 if lbl == "LEFT SHOULDER" else (0.02 if lbl == "LEFT ELBOW" else 0.0)
+        dip = head_dip if lbl in ("NOSE", "LEFT EYE", "RIGHT EYE", "LEFT EAR", "RIGHT EAR") else 0.0
+        ov[lbl] = (bx + lean_x + extra, by + dip)
+
+
 # --- actions ------------------------------------------------------------------
 def run_frames(rest, n=6, stride=0.10, lift=0.05):
     # Legs only, 6-frame cycle for a smooth natural gait (arms stay at rest so
-    # the hand keeps resting on the sheathed weapon). Smaller stride + low foot
-    # lift so it walks instead of tap-dancing.
+    # the hand keeps resting on the sheathed weapon). Small stride + low lift.
     L = _seglens(rest)
     frames = []
     for i in range(n):
@@ -111,10 +126,13 @@ def run_frames(rest, n=6, stride=0.10, lift=0.05):
         for s, phase0 in (("LEFT", 0.0), ("RIGHT", 0.5)):
             phi = t + phase0
             hip = (rest[f"{s} HIP"]["x"], rest[f"{s} HIP"]["y"])
-            foot_x = hip[0] + stride * math.cos(2 * math.pi * phi)
+            # -cos so the PLANTED foot travels backward (pushes body forward);
+            # +cos moon-walked. Foot lifts during the swing half (sin>0).
+            foot_x = hip[0] - stride * math.cos(2 * math.pi * phi)
             foot_y = rest[f"{s} LEG"]["y"] - lift * max(0.0, math.sin(2 * math.pi * phi))
             ov[f"{s} KNEE"] = ik2(hip, (foot_x, foot_y), L[(s, "thigh")], L[(s, "shank")], bend_sign=-1)
             ov[f"{s} LEG"] = (foot_x, foot_y)
+        apply_lean(rest, ov)
         frames.append(frame_from(rest, ov, dy=dy))
     return frames
 
@@ -123,7 +141,9 @@ def idle_frames(rest, n=3):
     frames = []
     for i in range(n):
         dy = -0.02 * math.sin(2 * math.pi * i / n)   # gentle breathing bob
-        frames.append(frame_from(rest, {}, dy=dy))
+        ov = {}
+        apply_lean(rest, ov)
+        frames.append(frame_from(rest, ov, dy=dy))
     return frames
 
 
