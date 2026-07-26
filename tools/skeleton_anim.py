@@ -98,15 +98,16 @@ def frame_from(rest, overrides, dy=0.0):
 
 
 # --- actions ------------------------------------------------------------------
-def run_frames(rest, n=3, stride=0.17, lift=0.12):
-    # Legs only. Arms stay at rest so his hand keeps resting on the sheathed
-    # weapon as he moves (no arm pumping -- per art direction).
+def run_frames(rest, n=6, stride=0.10, lift=0.05):
+    # Legs only, 6-frame cycle for a smooth natural gait (arms stay at rest so
+    # the hand keeps resting on the sheathed weapon). Smaller stride + low foot
+    # lift so it walks instead of tap-dancing.
     L = _seglens(rest)
     frames = []
     for i in range(n):
         t = i / n
         ov = {}
-        dy = -0.03 * abs(math.sin(2 * math.pi * t))   # body bob (2x leg freq)
+        dy = -0.018 * abs(math.sin(2 * math.pi * t))   # gentle body bob
         for s, phase0 in (("LEFT", 0.0), ("RIGHT", 0.5)):
             phi = t + phase0
             hip = (rest[f"{s} HIP"]["x"], rest[f"{s} HIP"]["y"])
@@ -222,29 +223,39 @@ def generate(action: str, n: int | None):
     rest = rest_pose()
     fn = ACTIONS[action]
     frames = fn(rest, n) if n else fn(rest)
+    if len(frames) % 3 != 0:
+        raise SystemExit(f"{action}: {len(frames)} frames; must be a multiple of 3 "
+                         f"(the model is a 3-frame window).")
     c = g.client()
     g.show_balance(c, "before")
     ref = Image.open(g.NINJA_DIR / "base64.png").convert("RGBA")
-    print(f"Skeleton-animating '{action}' ({len(frames)} frames)...")
-    d = g.post(c, "animate-with-skeleton", {
-        "image_size": {"width": 64, "height": 64},
-        # REST expects each frame as a bare list of keypoints (not {"keypoints":[...]}).
-        "skeleton_keypoints": [f["keypoints"] for f in frames],
-        "view": "side",
-        "direction": "east",
-        "reference_image": g.b64_of(ref),
-        "reference_guidance_scale": 1.1,
-        "pose_guidance_scale": 3.0,
-        "seed": 0,
-    })
     out = g.NINJA_DIR / action
     out.mkdir(parents=True, exist_ok=True)
-    for i, im in enumerate(d["images"]):
-        p = out / f"{action}_{i}.png"
-        g.save_b64(im, p)
-        strip_bg(p)
+    for f in out.glob(f"{action}_*.png"):
+        f.unlink()
+    print(f"Skeleton-animating '{action}' ({len(frames)} frames "
+          f"= {len(frames)//3} window(s) of 3)...")
+    idx = 0
+    for w0 in range(0, len(frames), 3):        # chain 3-frame windows
+        window = frames[w0:w0 + 3]
+        d = g.post(c, "animate-with-skeleton", {
+            "image_size": {"width": 64, "height": 64},
+            # REST wants each frame as a bare list of keypoints (not {"keypoints":[...]}).
+            "skeleton_keypoints": [f["keypoints"] for f in window],
+            "view": "side",
+            "direction": "east",
+            "reference_image": g.b64_of(ref),
+            "reference_guidance_scale": 1.1,
+            "pose_guidance_scale": 3.0,
+            "seed": 0,
+        })
+        for im in d["images"]:
+            p = out / f"{action}_{idx}.png"
+            g.save_b64(im, p)
+            strip_bg(p)
+            idx += 1
     g.show_balance(c, "after")
-    print(f"Saved {len(d['images'])} frames (bg removed) -> {out}")
+    print(f"Saved {idx} frames (bg removed) -> {out}")
 
 
 def strip_bg(path: Path) -> None:

@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=19 format=3]
+[gd_resource type="SpriteFrames" load_steps=22 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/ninja/idle/idle_0.png" id="1_idle0"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ninja/idle/idle_1.png" id="2_idle1"]
@@ -6,18 +6,21 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/ninja/run/run_0.png" id="4_run0"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ninja/run/run_1.png" id="5_run1"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ninja/run/run_2.png" id="6_run2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/jump/jump_0.png" id="7_jump0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/jump/jump_1.png" id="8_jump1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/jump/jump_2.png" id="9_jump2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/attack/attack_0.png" id="10_attack0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/attack/attack_1.png" id="11_attack1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/attack/attack_2.png" id="12_attack2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/dodge/dodge_0.png" id="13_dodge0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/dodge/dodge_1.png" id="14_dodge1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/dodge/dodge_2.png" id="15_dodge2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/hit/hit_0.png" id="16_hit0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/hit/hit_1.png" id="17_hit1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ninja/hit/hit_2.png" id="18_hit2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/run/run_3.png" id="7_run3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/run/run_4.png" id="8_run4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/run/run_5.png" id="9_run5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/jump/jump_0.png" id="10_jump0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/jump/jump_1.png" id="11_jump1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/jump/jump_2.png" id="12_jump2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/attack/attack_0.png" id="13_attack0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/attack/attack_1.png" id="14_attack1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/attack/attack_2.png" id="15_attack2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/dodge/dodge_0.png" id="16_dodge0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/dodge/dodge_1.png" id="17_dodge1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/dodge/dodge_2.png" id="18_dodge2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/hit/hit_0.png" id="19_hit0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/hit/hit_1.png" id="20_hit1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ninja/hit/hit_2.png" id="21_hit2"]
 
 [resource]
 animations = [{
@@ -26,27 +29,27 @@ animations = [{
 "name": &"idle",
 "speed": 6.0
 }, {
-"frames": [{"duration":1.0,"texture":ExtResource("4_run0")},{"duration":1.0,"texture":ExtResource("5_run1")},{"duration":1.0,"texture":ExtResource("6_run2")}],
+"frames": [{"duration":1.0,"texture":ExtResource("4_run0")},{"duration":1.0,"texture":ExtResource("5_run1")},{"duration":1.0,"texture":ExtResource("6_run2")},{"duration":1.0,"texture":ExtResource("7_run3")},{"duration":1.0,"texture":ExtResource("8_run4")},{"duration":1.0,"texture":ExtResource("9_run5")}],
 "loop": true,
 "name": &"run",
 "speed": 12.0
 }, {
-"frames": [{"duration":1.0,"texture":ExtResource("7_jump0")},{"duration":1.0,"texture":ExtResource("8_jump1")},{"duration":1.0,"texture":ExtResource("9_jump2")}],
+"frames": [{"duration":1.0,"texture":ExtResource("10_jump0")},{"duration":1.0,"texture":ExtResource("11_jump1")},{"duration":1.0,"texture":ExtResource("12_jump2")}],
 "loop": false,
 "name": &"jump",
 "speed": 10.0
 }, {
-"frames": [{"duration":1.0,"texture":ExtResource("10_attack0")},{"duration":1.0,"texture":ExtResource("11_attack1")},{"duration":1.0,"texture":ExtResource("12_attack2")}],
+"frames": [{"duration":1.0,"texture":ExtResource("13_attack0")},{"duration":1.0,"texture":ExtResource("14_attack1")},{"duration":1.0,"texture":ExtResource("15_attack2")}],
 "loop": false,
 "name": &"attack",
 "speed": 14.0
 }, {
-"frames": [{"duration":1.0,"texture":ExtResource("13_dodge0")},{"duration":1.0,"texture":ExtResource("14_dodge1")},{"duration":1.0,"texture":ExtResource("15_dodge2")}],
+"frames": [{"duration":1.0,"texture":ExtResource("16_dodge0")},{"duration":1.0,"texture":ExtResource("17_dodge1")},{"duration":1.0,"texture":ExtResource("18_dodge2")}],
 "loop": false,
 "name": &"dodge",
 "speed": 14.0
 }, {
-"frames": [{"duration":1.0,"texture":ExtResource("16_hit0")},{"duration":1.0,"texture":ExtResource("17_hit1")},{"duration":1.0,"texture":ExtResource("18_hit2")}],
+"frames": [{"duration":1.0,"texture":ExtResource("19_hit0")},{"duration":1.0,"texture":ExtResource("20_hit1")},{"duration":1.0,"texture":ExtResource("21_hit2")}],
 "loop": false,
 "name": &"hit",
 "speed": 10.0
