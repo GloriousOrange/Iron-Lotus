@@ -129,7 +129,7 @@ def run_frames(rest, n=3, stride=0.17, lift=0.12, arm_swing=1.15):
     return frames
 
 
-def idle_frames(rest, n=4):
+def idle_frames(rest, n=3):
     frames = []
     for i in range(n):
         dy = -0.02 * math.sin(2 * math.pi * i / n)   # gentle breathing bob
@@ -137,11 +137,11 @@ def idle_frames(rest, n=4):
     return frames
 
 
-def jump_frames(rest, n=4):
+def jump_frames(rest, n=3):
     L = _seglens(rest)
-    # crouch -> extend -> tuck -> land
-    poses = [0.06, -0.05, -0.02, 0.04]      # body dy per frame
-    tuck = [0.02, 0.05, 0.09, 0.03]         # how much knees pull up
+    # crouch -> launch/extend -> rising tuck  (a jump is not a loop)
+    poses = [0.06, -0.06, -0.03]      # body dy per frame
+    tuck = [0.01, 0.02, 0.10]         # how much the feet pull up
     frames = []
     for i in range(n):
         ov = {}
