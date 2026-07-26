@@ -156,7 +156,77 @@ def jump_frames(rest, n=3):
     return frames
 
 
-ACTIONS = {"run": run_frames, "idle": idle_frames, "jump": jump_frames}
+def _set_arm(rest, ov, side, ang, bend=0.35):
+    """Pose one arm: shoulder->elbow at angle `ang` (radians, 0=+x, +y down),
+    forearm bent by `bend`."""
+    L = _seglens(rest)
+    sh = (rest[f"{side} SHOULDER"]["x"], rest[f"{side} SHOULDER"]["y"])
+    elbow = (sh[0] + L[(side, "uarm")] * math.cos(ang), sh[1] + L[(side, "uarm")] * math.sin(ang))
+    wa = ang + bend
+    wrist = (elbow[0] + L[(side, "farm")] * math.cos(wa), elbow[1] + L[(side, "farm")] * math.sin(wa))
+    ov[f"{side} ELBOW"] = elbow
+    ov[f"{side} ARM"] = wrist
+
+
+def attack_frames(rest, n=3):
+    # Katana slash with the near (LEFT) arm: wind up high-back -> slash
+    # forward-down -> follow-through low. Far arm stays tucked.
+    angles = [-2.3, 0.4, 1.3]     # up-back, forward-down, down
+    frames = []
+    for i in range(n):
+        ov = {}
+        _set_arm(rest, ov, "LEFT", angles[i], bend=0.15)
+        _set_arm(rest, ov, "RIGHT", 1.7, bend=0.6)   # off hand tucked back
+        # slight forward lean into the swing on the strike frame
+        dx = [-0.01, 0.02, 0.015][i]
+        for lbl in ("NOSE", "LEFT EYE", "RIGHT EYE", "LEFT EAR", "RIGHT EAR", "NECK"):
+            ov[lbl] = (rest[lbl]["x"] + dx, rest[lbl]["y"])
+        frames.append(frame_from(rest, ov))
+    return frames
+
+
+def dodge_frames(rest, n=3):
+    # Dodge-roll: crouch -> deep forward tuck -> rise. Body drops and leans,
+    # legs pull up under the hips, head ducks.
+    L = _seglens(rest)
+    body_dy = [0.05, 0.14, 0.05]
+    foot_up = [0.06, 0.16, 0.06]
+    lean = [0.02, 0.06, 0.03]
+    frames = []
+    for i in range(n):
+        ov = {}
+        for s in LIMBS:
+            hip = (rest[f"{s} HIP"]["x"], rest[f"{s} HIP"]["y"])
+            foot = (hip[0] + 0.04, rest[f"{s} LEG"]["y"] - foot_up[i])
+            ov[f"{s} KNEE"] = ik2(hip, foot, L[(s, "thigh")], L[(s, "shank")], bend_sign=+1)
+            ov[f"{s} LEG"] = foot
+            _set_arm(rest, ov, s, 1.9, bend=0.8)     # arms tucked in
+        for lbl in ("NOSE", "LEFT EYE", "RIGHT EYE", "LEFT EAR", "RIGHT EAR", "NECK"):
+            ov[lbl] = (rest[lbl]["x"] + lean[i], rest[lbl]["y"] + 0.04)
+        frames.append(frame_from(rest, ov, dy=body_dy[i]))
+    return frames
+
+
+def hit_frames(rest, n=3):
+    # Flinch: recoil the upper body backward (-x) and up, then settle.
+    recoil = [0.0, -0.06, -0.02]
+    up = [0.0, -0.02, 0.0]
+    frames = []
+    for i in range(n):
+        ov = {}
+        for lbl in ("NOSE", "LEFT EYE", "RIGHT EYE", "LEFT EAR", "RIGHT EAR",
+                    "NECK", "LEFT SHOULDER", "RIGHT SHOULDER"):
+            ov[lbl] = (rest[lbl]["x"] + recoil[i], rest[lbl]["y"] + up[i])
+        _set_arm(rest, ov, "LEFT", -0.6, bend=0.6)   # arms fly up defensively
+        _set_arm(rest, ov, "RIGHT", -0.9, bend=0.6)
+        frames.append(frame_from(rest, ov))
+    return frames
+
+
+ACTIONS = {
+    "run": run_frames, "idle": idle_frames, "jump": jump_frames,
+    "attack": attack_frames, "dodge": dodge_frames, "hit": hit_frames,
+}
 
 
 def generate(action: str, n: int | None):
