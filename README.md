@@ -10,11 +10,26 @@ for implementation.
 ## Status
 
 **Early implementation.** This README is still the living design
-reference (4 friends + the project owner, all collaborating via Claude),
-but a first-pass Godot 4 project now exists: Kageharu (Ninja) is playable
-with a placeholder moveset and a test Level 1 scene (parallax background,
-a couple of humanoid/flying placeholder enemies). Everything else in this
-doc is still design-only until it gets built the same way.
+reference (4 friends + the project owner, all collaborating via Claude).
+Progress in the Godot 4 project so far:
+
+- **Kageharu (Ninja)** is playable with real pixel-art: a PixelLab-generated
+  sprite (dark hooded shinobi) with a full skeleton-animated set — idle, walk,
+  jump, dodge, hit, plus an iaijutsu draw-cut attack (attack feel still being
+  tuned). Wall-climb, wall-jump, dodge-roll, two melee slots + a ranged throw
+  are wired up. The other five characters are still design-only.
+- **Level 1** (Feudal East exterior) is code-generated (see
+  `scripts/levels/Level1.gd`), ~90,000px long, with checkpoints and a real
+  finish gate. Enemies are still greybox placeholders (humanoid / flying /
+  brute).
+- **Level art:** a large PixelLab background + platform library exists for 15
+  environments (all the planned levels + bonus/boss arenas + demonic-corruption
+  mood variants) under `assets/backgrounds/` and `assets/platforms/` — see
+  `assets/backgrounds/README.md`. Not yet wired into scenes; picks pending.
+- **Art pipeline:** sprites and scenery are generated via PixelLab
+  (`tools/pixellab_gen.py`, `tools/skeleton_anim.py`, `tools/bg_gen.py`).
+
+Everything else in this doc is still design-only until it gets built the same way.
 
 ## Lore
 
@@ -351,11 +366,12 @@ A visual arc where each level teases the next:
    10-minute level. **Generated procedurally from data in
    `scripts/levels/Level1.gd`** (a deterministic seed, so the layout is
    stable) rather than hand-placed nodes, so it can be long and easy to
-   tune. Currently ~32,000px of left-to-right content built from a mix of
+   tune. Currently ~90,000px of left-to-right content built from a mix of
    segment types — flat combat stretches, brute arenas, ascending
    platform stairs, wall-climb obstacles, wall-jump shafts, and bridged
-   pits — with 5 checkpoints and ~52 placeholder enemies (25 humanoid, 19
-   flying, 8 brutes). Falling into a pit respawns at the last checkpoint.
+   pits — with regular checkpoints, placeholder enemies, and a real finish
+   gate (a torii on a solid plaza that triggers a LEVEL COMPLETE) at the end
+   instead of a drop-off. Falling into a pit respawns at the last checkpoint.
    Length/segment-mix/enemy-density constants at the top of Level1.gd are
    the tuning knobs; exact 10-minute pacing still needs playtest tuning.
 2. **Inside the temple** — large golden statues as set dressing/possible
