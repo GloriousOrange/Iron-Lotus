@@ -142,7 +142,8 @@ def gen_platforms(level: str, plats: list) -> None:
 
 
 def sheet(level: str) -> None:
-    bgs = sorted((ASSETS / "backgrounds" / level).glob("bg_*.png"))
+    bgs = (sorted((ASSETS / "backgrounds" / level).glob("bg_*.png"))
+           + sorted((ASSETS / "backgrounds" / level).glob("corrupt_*.png")))
     plats = sorted((ASSETS / "platforms" / level).glob("*.png"))
     pad = 10
     rowh = BG_H + pad
@@ -150,10 +151,15 @@ def sheet(level: str) -> None:
     H = rowh + PLAT_SIZE + pad * 3 + 20
     img = Image.new("RGBA", (W, H), (24, 24, 28, 255))
     d = ImageDraw.Draw(img)
-    d.text((pad, 4), f"{level}  —  backgrounds (400x224 variants) + platforms", fill=(230, 230, 235, 255))
+    d.text((pad, 4), f"{level}  —  backgrounds + platforms  (label each panel by filename below)", fill=(230, 230, 235, 255))
     x = pad
     for b in bgs:
         img.paste(Image.open(b).convert("RGBA"), (x, 20))
+        # bold filename tag so a pick is unambiguous ("<level> <stem>")
+        tag = b.stem
+        tw = d.textlength(tag) + 8
+        d.rectangle([x, 20, x + tw, 34], fill=(0, 0, 0, 200))
+        d.text((x + 4, 22), tag, fill=(255, 230, 120, 255))
         x += BG_W + pad
     x, y = pad, 20 + rowh
     for pl in plats:
