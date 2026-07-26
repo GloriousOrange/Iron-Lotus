@@ -125,14 +125,16 @@ def gen_platforms(level: str, plats: list) -> None:
     out.mkdir(parents=True, exist_ok=True)
     for name, prompt in plats:
         d = g.post(c, "generate-image-pixflux", {
-            "description": f"{prompt}, flat side-on horizontal platform seen from "
-                           f"the side, front elevation, single object centered, "
-                           f"dark gritty muted pixel art game asset",
+            "description": f"{prompt}, a solid chunky platform with a FLAT FLAT "
+                           f"horizontal top surface to stand on, seen straight from "
+                           f"the side in orthographic elevation, thick base, one "
+                           f"centered object, dark gritty muted pixel art platformer "
+                           f"tile, crisp readable silhouette",
             "negative_description": PLAT_NEG,
             "image_size": {"width": PLAT_SIZE, "height": PLAT_SIZE // 2},
-            "text_guidance_scale": 8.0,
+            "text_guidance_scale": 8.5,
             "no_background": True,
-            "seed": 1,
+            "seed": 2,
         })
         p = out / f"{name}.png"
         g.save_b64(d["image"], p)
