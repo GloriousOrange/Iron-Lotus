@@ -17,7 +17,7 @@ const FLYING := preload("res://scenes/enemies/EnemyFlying.tscn")
 const BRUTE := preload("res://scenes/enemies/EnemyBrute.tscn")
 const CHECKPOINT := preload("res://scenes/levels/Checkpoint.tscn")
 
-const LEVEL_LENGTH := 30000.0     ## total horizontal extent (px)
+const LEVEL_LENGTH := 90000.0     ## total horizontal extent (px)
 const SURFACE_Y := 680.0          ## top of the ground plane
 const FLOOR_CENTER_Y := 700.0
 const FLOOR_HALF_H := 20.0
@@ -75,9 +75,9 @@ func _generate_level() -> void:
 			4: x = _seg_wall_jump(x)
 			5: x = _seg_pit(x)
 
-	# Closing stretch + end marker.
+	# Closing stretch leads into a solid finish plaza + win trigger.
 	x = _seg_flat(x, 1000.0, 0)
-	_add_end_gate(x)
+	_add_finish(x)
 
 
 func _maybe_checkpoint(x: float) -> void:
@@ -201,8 +201,32 @@ func _add_checkpoint(x: float) -> void:
 	add_child(cp)
 
 
-func _add_end_gate(x: float) -> void:
-	# Decorative torii-style marker at the finish (no win logic yet).
+var _finished := false
+
+func _add_finish(x: float) -> void:
+	# Real finish: a solid plaza so the level ends on standable ground (not a
+	# cliff you fall off), a torii gate marking the goal, and an Area2D across
+	# the gate that fires the win when the player walks through it.
+	var plaza_end := x + 1400.0
+	_floor(x, plaza_end)
+	var gate_x := x + 500.0
+	_add_gate_visual(gate_x)
+
+	var area := Area2D.new()
+	area.position = Vector2(gate_x, SURFACE_Y - 100.0)
+	area.collision_layer = 0
+	area.collision_mask = 2          # detect the player (player is on layer 2)
+	var cs := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(60.0, 200.0)
+	cs.shape = shape
+	area.add_child(cs)
+	area.body_entered.connect(_on_reached_finish)
+	add_child(area)
+
+
+func _add_gate_visual(x: float) -> void:
+	# Decorative torii-style marker at the finish.
 	var gate := Node2D.new()
 	gate.position = Vector2(x, SURFACE_Y)
 	var vis := Polygon2D.new()
@@ -213,3 +237,35 @@ func _add_end_gate(x: float) -> void:
 		Vector2(-60, -160), Vector2(60, -160), Vector2(-60, -130), Vector2(60, -130)])
 	gate.add_child(vis)
 	add_child(gate)
+
+
+func _on_reached_finish(body: Node) -> void:
+	if _finished or not body.is_in_group("player"):
+		return
+	_finished = true
+	# Freeze the player in place and show the win banner. A real level-complete
+	# flow (score, next-level load) is a later pass -- see README open items.
+	if body.has_method("set_physics_process"):
+		body.set_physics_process(false)
+	if body is CharacterBody2D:
+		body.velocity = Vector2.ZERO
+	_show_level_complete()
+
+
+func _show_level_complete() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 100
+	var dim := ColorRect.new()
+	dim.color = Color(0.0, 0.0, 0.0, 0.55)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(dim)
+	var label := Label.new()
+	label.text = "LEVEL COMPLETE"
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.set_anchors_preset(Control.PRESET_FULL_RECT)
+	label.add_theme_font_size_override("font_size", 72)
+	label.add_theme_color_override("font_color", Color(0.9, 0.8, 0.4))
+	layer.add_child(label)
+	add_child(layer)
